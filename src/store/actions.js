@@ -1,15 +1,18 @@
-const getAllRepoData = (username) => {
+const getAllRepoData = async (username) => {
     return fetch(`https://api.github.com/users/${username}/repos?per_page=10`)
         .then(res => res.json())
 }
 
 
 export const fetchUsers = (username) => {
-    return dispatch => {
-        fetch(`https://api.github.com/users/${username}`)
+    return async dispatch => {
+        let repo = await getAllRepoData(username);
+        if(repo.message = "Not Found") {
+            repo = [];
+        }
+        return fetch(`https://api.github.com/users/${username}`)
         .then(res => res.json())
         .then(res => {
-            // let repo = await getAllRepoData(username);
             let saveUser = window.localStorage.getItem('savedItems');
             saveUser = saveUser ? JSON.parse(saveUser) : []; 
             let alreadyViewd= false;
@@ -21,7 +24,7 @@ export const fetchUsers = (username) => {
             }
             dispatch({
                 type: 'SUCCESS',
-                data: {...res, alreadyViewd}
+                data: {...res, alreadyViewd, repos: repo}
             });
         });
     }

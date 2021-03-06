@@ -33,6 +33,11 @@ class Search extends Component{
                         <li>name : {this.props.userData.name || ''}</li>
                         <li>bio:{this.props.userData.bio ||''}</li>
                         <li>{ this.props.userData.alreadyViewd ? <label className={'savedlabel'}>Already Viewed</label>: null }</li>
+                        <li>
+                            <ul>
+                                { this.props.userData && this.props.userData.repos &&  this.props.userData.repos.map((item) => <li>{item.name}</li>) }
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
